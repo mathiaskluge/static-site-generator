@@ -27,17 +27,38 @@ class HTMLNode:
 
 class LeafNode(HTMLNode):
 
-    def __init__(self, tag: str = None, value: str = None, props: dict = None) -> None:
-        super().__init__(tag, value, props)
-        self.tag = tag
-        self.value = value
-        self.props = props
+    def __init__(
+            self, tag: str = None, value: str = None, props: dict = None
+    ) -> None:
 
-        if self.value is None:
+        if value is None:
             raise ValueError("Value parameter cannot be None")
+
+        super().__init__(tag, value, None, props)
+
 
     def to_html(self):
         if self.tag is None:
             return f"{self.value}"
         else:
             return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+
+class ParentNode(HTMLNode):
+
+    def __init__(
+        self, tag: str = None, children: list = None, props: dict = None
+    ) -> None:
+
+        if tag is None:
+            raise ValueError("Tag cannot be None")
+
+        if children is None or len(children) == 0:
+            raise ValueError("Children cannot be None")
+
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+
+        children_html = "".join(child.to_html() for child in self.children)
+        return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
