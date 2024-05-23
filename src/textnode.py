@@ -11,6 +11,7 @@ class TextType(Enum):
 
 
 class TextNode:
+    """"""
 
     def __init__(
         self, text: str, text_type: TextType = TextType.TEXT, url: str = None
