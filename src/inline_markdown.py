@@ -1,4 +1,3 @@
-# regex to parse markdown images and links
 import re
 
 from textnode import TextNode, TextType
@@ -129,7 +128,7 @@ def split_nodes_image(old_nodes):
             halfs = text.split(f"![{image[0]}]({image[1]})", 1)
             # catches invalid markdown
             if len(halfs) != 2:
-                raise ValueError("Image tag were not closed: ![{image[0]}]({image[1]})")
+                raise ValueError("Image tag was not closed: ![{image[0]}]({image[1]})")
             # image not at the beggining -> append text first
             if halfs[0] != "":
                 new_nodes.append(TextNode(halfs[0], TextType.TEXT))
@@ -170,7 +169,7 @@ def split_nodes_link(old_nodes):
             halfs = text.split(f"[{link[0]}]({link[1]})", 1)
             # catches invalid markdown
             if len(halfs) != 2:
-                raise ValueError(f"Link tag were not closed: [{link[0]}]({link[1]})")
+                raise ValueError(f"Link tag was not closed: [{link[0]}]({link[1]})")
             # link not at the beggining -> append text first
             if halfs[0] != "":
                 new_nodes.append(TextNode(halfs[0], TextType.TEXT))
@@ -185,6 +184,7 @@ def split_nodes_link(old_nodes):
 
 
 def text_to_textnodes(text):
+    """Converts text into a list of TextNodes."""
     nodes = [TextNode(text, TextType.TEXT)]
     nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
     nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
@@ -192,3 +192,12 @@ def text_to_textnodes(text):
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
     return nodes
+
+
+def text_to_html_nodes(text):
+    """Converts text into a list of Inline HTMLNodes"""
+    children = []
+    for textnode in text_to_textnodes(text):
+        children.append(text_node_to_html_node(textnode))
+    
+    return children
