@@ -199,5 +199,5 @@ def text_to_html_nodes(text):
     children = []
     for textnode in text_to_textnodes(text):
         children.append(text_node_to_html_node(textnode))
-    
+
     return children
