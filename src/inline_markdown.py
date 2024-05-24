@@ -20,20 +20,12 @@ def text_node_to_html_node(text_node):
         case TextType.LINK:
             return LeafNode("a", text_node.text, {"href": text_node.url})
         case TextType.IMAGE:
-            return LeafNode(
-                "img",
-                "",
-                {"src": text_node.url, "alt": text_node.text}
-                )
+            return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise ValueError("Invalid TextType")
 
 
-def split_nodes_delimiter(
-        old_nodes: list,
-        delimiter: str,
-        text_type: TextType
-        ):
+def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type: TextType):
     """Splits a list of TextNode by a delimiter and assigns TextTypes.
 
     Splits only TextNodes of TextType.TEXT.
@@ -93,9 +85,7 @@ def extract_markdown_images(text):
     pattern = r"!\[(.*?)\]\((.*?)\)"
     matches = re.findall(pattern, text)
 
-    images = [(alt, url) for alt, url in matches]
-
-    return images
+    return matches
 
 
 def extract_markdown_links(text):
@@ -109,9 +99,7 @@ def extract_markdown_links(text):
     pattern = r"\[(.*?)\]\((.*?)\)"
     matches = re.findall(pattern, text)
 
-    links = [(label, url) for label, url in matches]
-
-    return links
+    return matches
 
 
 def split_nodes_image(old_nodes):
@@ -125,67 +113,32 @@ def split_nodes_image(old_nodes):
     new_nodes = []
 
     for node in old_nodes:
-
+        # skip all non TextType.TEXT nodes and append as they are
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
             continue
-
+        # gets text and images
         text = node.text
-        images = extract_markdown_images(node.text)
-
-        # appends node if there is no image
+        images = extract_markdown_images(text)
+        # appends node if there are no images
         if len(images) == 0:
             new_nodes.append(TextNode(node.text, TextType.TEXT))
             continue
-
-        for i in range(len(images)):
-
-            split_text = text.split(f"![{images[i][0]}]({images[i][1]})", 1)
-
-            # if there's at least one more ref in split_text[1]
-            if i + 1 < len(images):
-                # ref is right at the start
-                if split_text[0] == "":
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-                else:
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-                # next text to split is remainder (there is at least one more)
-                text = split_text[1]
-                continue
-            # last ref or only one in total
-            else:
-                # ref is the entire thing
-                if split_text[0] == "" and split_text[1] == "":
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-
-                # ref is at the start, text afterwards
-                elif split_text[0] == "":
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-                    new_nodes.append(TextNode(split_text[1], TextType.TEXT))
-
-                # ref is at the end, text before
-                elif split_text[1] == "":
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-
-                # ref is in the middle, text before and after
-                else:
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(images[i][0], TextType.IMAGE, images[i][1])
-                    )
-                    new_nodes.append(TextNode(split_text[1], TextType.TEXT))
+        for image in images:
+            # splits text in half at the point of the image
+            halfs = text.split(f"![{image[0]}]({image[1]})", 1)
+            # catches invalid markdown
+            if len(halfs) != 2:
+                raise ValueError("Image tag were not closed: ![{image[0]}]({image[1]})")
+            # image not at the beggining -> append text first
+            if halfs[0] != "":
+                new_nodes.append(TextNode(halfs[0], TextType.TEXT))
+            new_nodes.append(TextNode(image[0], TextType.IMAGE, image[1]))
+            # sets second half as new text to go over for the next image
+            text = halfs[1]
+        # -> image was not at the end, append remaining text
+        if text != "":
+            new_nodes.append(TextNode(text, TextType.TEXT))
 
     return new_nodes
 
@@ -201,65 +154,32 @@ def split_nodes_link(old_nodes):
     new_nodes = []
 
     for node in old_nodes:
-        
+        # skip all non TextType.TEXT nodes and append as they are
         if node.text_type is not TextType.TEXT:
             new_nodes.append(node)
             continue
-        
+        # gets text and links
         text = node.text
-        links = extract_markdown_links(node.text)
-        # appends node if there is no link
+        links = extract_markdown_links(text)
+        # appends node if there are no links
         if len(links) == 0:
             new_nodes.append(TextNode(node.text, TextType.TEXT))
             continue
-
-        for i in range(len(links)):
-            split_text = text.split(f"[{links[i][0]}]({links[i][1]})", 1)
-
-            # if there's at least one more link in split_text[1]
-            if i + 1 < len(links):
-                # link is right at the start
-                if split_text[0] == "":
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-                else:
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-                # next text to split is remainder (there is at least one more)
-                text = split_text[1]
-                continue
-            # last link or only one in total
-            else:
-                # link is the entire thing
-                if split_text[0] == "" and split_text[1] == "":
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-
-                # link is at the start, text afterwards
-                elif split_text[0] == "":
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-                    new_nodes.append(TextNode(split_text[1], TextType.TEXT))
-
-                # link is at the end, text before
-                elif split_text[1] == "":
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-
-                # link is in the middle, text before and after
-                else:
-                    new_nodes.append(TextNode(split_text[0], TextType.TEXT))
-                    new_nodes.append(
-                        TextNode(links[i][0], TextType.LINK, links[i][1])
-                    )
-                    new_nodes.append(TextNode(split_text[1], TextType.TEXT))
+        for link in links:
+            # splits text in half at the point of the link
+            halfs = text.split(f"[{link[0]}]({link[1]})", 1)
+            # catches invalid markdown
+            if len(halfs) != 2:
+                raise ValueError(f"Link tag were not closed: [{link[0]}]({link[1]})")
+            # link not at the beggining -> append text first
+            if halfs[0] != "":
+                new_nodes.append(TextNode(halfs[0], TextType.TEXT))
+            new_nodes.append(TextNode(link[0], TextType.LINK, link[1]))
+            # sets second half as new text to go over for the next link
+            text = halfs[1]
+        # -> link was not at the end, append remaining text
+        if text != "":
+            new_nodes.append(TextNode(text, TextType.TEXT))
 
     return new_nodes
 

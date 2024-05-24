@@ -211,7 +211,7 @@ class TestSplitNodesLink(unittest.TestCase):
 class TestTextToTextNodes(unittest.TestCase):
 
     def test_processing(self):
-        text = "This is **text** with an *italic* word and a `code block` and an ![image](https://test.com/zjjcJKZ.png) and a [link]https://test.com/dfsdkjfd.png)"
+        text = "This is **text** with an *italic* word and a `code block` and an ![image](https://test.com/zjjcJKZ.png) and a [link](https://test.com/dfsdkjfd.png)"
         result = [
             TextNode("This is ", TextType.TEXT),
             TextNode("text", TextType.BOLD),
