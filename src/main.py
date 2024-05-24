@@ -1,20 +1,24 @@
 import os
 import shutil
 
+from markdown_to_html import generate_page
+
 
 def copy_files(
         src: str = "static",
         dst: str = "public",
         fil_c: int = 0,
-        fol_c: int = 0
+        fol_c: int = 0,
         ):
     """Copies files and folders from a src into a dst directory."""
     src_path = f"{src}/"
     dst_path = f"{dst}/"
 
-    if fil_c == 0:
-        print(f"Copying files from {src_path} to")
-        print("=============================")
+    # log
+    if fil_c == 0 and fol_c == 0:
+        print(f"\nCopying static files from {src_path} to")
+        print("====================================\n")
+
     try:
         # Remove old dst dir and all files
         shutil.rmtree(dst_path, ignore_errors=True)
@@ -27,11 +31,15 @@ def copy_files(
             print(f"|{fol_c * "-"} 🗂️ {dst_path}")
 
         # recursive copy
+        # Note: shutil.copytree is the better way. Focus here is learning
         for src_file in os.listdir(src_path):
             src_file_path = f"{src_path}{src_file}"
             dst_file_path = f"{dst_path}{src_file}"
             # is file
             if os.path.isfile(src_file_path):
+                # skipping .DS_Store
+                if src_file == ".DS_Store":
+                    continue
                 fil_c += 1
                 shutil.copy(src_file_path, dst_file_path)
                 # log files
@@ -46,7 +54,7 @@ def copy_files(
                     f"{src_file_path}",
                     f"{dst_file_path}",
                     fil_c,
-                    fol_c
+                    fol_c,
                     )
                 fol_c -= 1
 
@@ -56,6 +64,7 @@ def copy_files(
 
 def main():
     copy_files()
+    generate_page()
 
 
 if __name__ == "__main__":
