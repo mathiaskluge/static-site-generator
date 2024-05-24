@@ -94,15 +94,15 @@ class TestBlockToBlockType(unittest.TestCase):
             block_to_block_type(block)
 
     def test_ol_single(self):
-        block = ". list item"
+        block = "1. list item"
         self.assertEqual(BlockType.ORDERED_LIST, block_to_block_type(block))
 
     def test_ol_multi(self):
-        block = ". list item\n. list item"
+        block = "1. list item\n2. list item"
         self.assertEqual(BlockType.ORDERED_LIST, block_to_block_type(block))
 
     def test_ol_not_all(self):
-        block = ". list item\n list item"
+        block = "1. list item\nlist item"
         with self.assertRaises(Exception):
             block_to_block_type(block)
 

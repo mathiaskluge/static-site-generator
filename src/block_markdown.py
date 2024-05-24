@@ -21,7 +21,6 @@ def markdown_to_blocks(markdown):
         -------
             list
     """
-
     pattern = r"(?:\r?\n){2,}"
     return re.split(pattern, markdown.strip())
 
@@ -75,12 +74,26 @@ def block_to_block_type(markdown_block):
         raise Exception("Incorrect unordered list syntax")
 
     # Ordered List
-    ol_pattern = r"^\.\s"
-    matches = sum(1 for line in lines if re.match(ol_pattern, line))
-
-    if matches == len(lines):
+    if lines[0].startswith("1. "):
+        item_count = 1
+        for line in lines:
+            if not line.startswith(f"{item_count}. "):
+                raise Exception("Incorrect ordered list syntax")
+            else:
+                item_count += 1
         return BlockType.ORDERED_LIST
-    elif matches and matches != len(lines):
-        raise Exception("Ordered List Syntax not correct")
 
     return BlockType.PARAGRAPH
+
+
+def markdown_to_html_node(markdown):
+    pass
+
+    # Split markdown into blocks
+    # go over each block
+    # Get block type
+    # Get block content
+    # Create parent node for block based on respective type
+    # Take Block content and convernt to inline nodes
+    # Set inline nodes as children of parent block
+    # Add parent node to list of children of top-level div node
