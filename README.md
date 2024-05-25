@@ -27,6 +27,9 @@ It can handle following block markdown syntaxt:
 * Quote (`>`)
 * Unordered List (`*` or `-`)
 * Ordered Lists (`1.` - `n.`)
+
+And following inline markdown syntax:
+
 * Bold  (`**`)
 * Italic (`*`)
 * Code (`)
@@ -37,6 +40,6 @@ It cannot yet handle nested inline syntax yet:
 
 * Bold and Italic
 * Nested Blockquotes
-* ... and probably more I don't know of
+* ... and probably way more I don't know about
 
 
