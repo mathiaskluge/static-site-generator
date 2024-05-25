@@ -22,3 +22,4 @@
 * Brobably too much abstraction in markdown_to_html_node
 * -> insert all the functions it calls into the cases for better 
 * -> comprehention on what it does
+*
