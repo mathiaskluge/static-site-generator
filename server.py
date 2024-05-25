@@ -13,6 +13,8 @@ def run(
         os.chdir(directory)
     server_address = ("", port)
     httpd = server_class(server_address, handler_class)
+    print(f"\nStarting web server")
+    print("==================================")
     print(f"Serving HTTP on http://localhost:{port} from directory '{directory}'...")
     httpd.serve_forever()
 
