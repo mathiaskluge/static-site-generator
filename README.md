@@ -11,7 +11,6 @@ Purely educational, rudimentary [static site generator](https://en.wikipedia.org
 To build the site, `cd` into your project directory and run:
 
 ```bash
-# within top-level project directory
 ./main.sh
 ```
 
