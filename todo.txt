@@ -1,0 +1,24 @@
+* Functionality
+*
+* Specific templates per content page
+* -> specified in conten- frontmatter?
+* -> general config in code
+*
+* Navigation and links
+* -> there is likely a lot of basic stuff missing
+*
+* ===================================================================================
+*
+* Code Stuff
+*
+* Extract the shell prompting and logging out of core functions
+* -> Potential approach: have copy, generate and generate_recursive 
+* -> return a log to be used by dedicated shell prompting functions
+*
+* Combine processing of links and images
+* -> extract_markdown_images & extract_markdown_links => extract_markdown_references
+* -> split_nodes_image & split_nodes_link => split_nodes_references
+*
+* Brobably too much abstraction in markdown_to_html_node
+* -> insert all the functions it calls into the cases for better 
+* -> comprehention on what it does
