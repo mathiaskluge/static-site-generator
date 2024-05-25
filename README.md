@@ -1,4 +1,4 @@
-# static-site-generator
+# Static Site Generator
 
 Purely educational, rudimentary [static site generator](https://en.wikipedia.org/wiki/Static_site_generator) written in [Python](https://www.python.org/).
 
