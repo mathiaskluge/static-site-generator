@@ -34,7 +34,7 @@ And following inline markdown syntax:
 * Links (`[label](url)`)
 * Images (`![alt](src)`)
 
-It cannot yet handle nested inline syntax yet:
+It cannot handle nested inline syntax yet:
 
 * Bold and Italic
 * Nested Blockquotes
