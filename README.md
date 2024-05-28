@@ -3,7 +3,7 @@
 Purely educational, rudimentary [static site generator](https://en.wikipedia.org/wiki/Static_site_generator) written in [Python](https://www.python.org/). It uses:
 
 * [shutil](https://docs.python.org/3/library/shutil.html) and [pathlib](https://docs.python.org/3/library/pathlib.html) for filesystem operations
-* [re](https://docs.python.org/3/library/re.html) (Regex) for the Markdown to HTML processing
+* [re](https://docs.python.org/3/library/re.html) (Regex) for Markdown to HTML processing
 
 ## Basic usage
 
