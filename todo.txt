@@ -11,6 +11,10 @@
 *
 * Code Stuff
 *
+* Error Handling
+* -> consistent, holistic approach with very useful feedback
+* -> where: all file copying and processing (extension, location) and content processing
+*
 * Extract the shell prompting and logging out of core functions
 * -> Potential approach: have copy, generate and generate_recursive 
 * -> return a log to be used by dedicated shell prompting functions
