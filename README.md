@@ -1,10 +1,9 @@
 # Static Site Generator
 
-Purely educational, rudimentary [static site generator](https://en.wikipedia.org/wiki/Static_site_generator) written in [Python](https://www.python.org/).
+Purely educational, rudimentary [static site generator](https://en.wikipedia.org/wiki/Static_site_generator) written in [Python](https://www.python.org/). It uses:
 
-* Shell and filesystem -> [shutil](https://docs.python.org/3/library/shutil.html) and [pathlib](https://docs.python.org/3/library/pathlib.html)
-* Regex -> [re](https://docs.python.org/3/library/re.html)
-* Resiliance -> md to HTML...
+* [shutil](https://docs.python.org/3/library/shutil.html) and [pathlib](https://docs.python.org/3/library/pathlib.html) for filesystem operations
+* [re](https://docs.python.org/3/library/re.html) (Regex) for the Markdown to HTML processing
 
 ## Basic usage
 
