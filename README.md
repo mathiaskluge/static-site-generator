@@ -13,7 +13,7 @@ To build the site, `cd` into your project directory and run:
 ./main.sh
 ```
 
-The script will build your site and serve it using a minimal HTTP server. The site is build from the `static` and `content` directories and files are published into the `public` directory.
+The script will build your site and serve it using a minimal HTTP server. The site is build from the `/static` and `/content` directories and files are published into the `/public` directory.
 
 ## Capabilities & Limitations
 
