@@ -38,6 +38,6 @@ It cannot handle nested inline syntax yet:
 
 * Bold and Italic
 * Nested Blockquotes
-* ... and probably way more I don't know about
+* ... and probably way more I don't know about, yet
 
 
