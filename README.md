@@ -41,3 +41,4 @@ It cannot handle nested inline syntax yet:
 * ... and probably way more I don't know about, yet
 
 
+## Contributing
